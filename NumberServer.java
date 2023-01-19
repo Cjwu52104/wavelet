@@ -7,7 +7,7 @@ class Handler implements URLHandler {
     // various requests.
     int num = 0;
 
-    public String handleRequest(URI url) {
+    public String handleRequest(URI url, File mdFile) {
         if (url.getPath().equals("/")) {
             return String.format("Connor's Number: %d", num);
         } else if (url.getPath().equals("/increment")) {
