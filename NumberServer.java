@@ -1,4 +1,3 @@
-import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 
@@ -6,8 +5,8 @@ class Handler implements URLHandler {
     // The one bit of state on the server: a number that will be manipulated by
     // various requests.
     int num = 0;
-
-    public String handleRequest(URI url, File mdFile) {
+    @Override
+    public String handleRequest(URI url) {
         if (url.getPath().equals("/")) {
             return String.format("Connor's Number: %d", num);
         } else if (url.getPath().equals("/increment")) {

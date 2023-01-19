@@ -3,7 +3,7 @@ import java.net.URI;
 import java.util.ArrayList;
 
 public class SearchEngine implements URLHandler {
-    ArrayList<String> words;
+    ArrayList<String> words = new ArrayList<String>();
     int size = 0;
 
     public String handleRequest(URI url) {
@@ -12,12 +12,10 @@ public class SearchEngine implements URLHandler {
         } else if (url.getPath().equals("/search")) {
             ArrayList<String> res = new ArrayList<String>();
             String[] parameters = url.getQuery().split("=");
-            int len = parameters.length;
-            for (int i = 0; i < len; i++) {
-                for (int j = 0; j < size; j++) {
-                    String currentWord = words.get(j);
-                    if (currentWord.contains(parameters[i])) {
-                        res.add(currentWord);
+            if (parameters[0].equals("s")) {
+                for (String word: words) {
+                    if (word.contains(parameters[1])) {
+                        res.add(word);
                     }
                 }
             }
@@ -26,11 +24,10 @@ public class SearchEngine implements URLHandler {
             System.out.println("Path: " + url.getPath());
             if (url.getPath().contains("/add")) {
                 String[] parameters = url.getQuery().split("=");
-                int len = parameters.length;
-                for (int i = 0; i < len; i++) {
-                    words.add(parameters[i]);
-                    ++size;
+                if (parameters[0].equals("s")) {
+                    words.add(parameters[1]);
                 }
+                return String.format("Added %s to the word list", parameters[1]);
             }
             return "404 Not Found!";
         }
@@ -44,6 +41,6 @@ public class SearchEngine implements URLHandler {
 
         int port = Integer.parseInt(args[0]);
 
-        Server.start(port, new Handler());
+        Server.start(port, new SearchEngine());
     }
 }
